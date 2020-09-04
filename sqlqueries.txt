@@ -1,0 +1,264 @@
+create table emp77(eid number(2) primary key,ename varchar2(20));
+
+insert into emp77 values(&eid,'&ename');
+
+create table emp7(eid number(2) primary key,ename varchar2(20),aadhar number(12) unique not null);
+
+set linesize 100;
+
+insert into emp7 values(&eid,'&ename',&aadhar);
+
+create table emp6(eid number(2),ename varchar2(20),sal number(10) check(sal>=3000));
+
+insert into emp6 values(&eid,'&ename',&sal);
+
+create table emp5(eid number(2),gender char(1) check(gender IN('M','F')));
+
+insert into emp5 VALUES(&eid,'&gender');
+
+create table emp4(eid number(2),amount number(6) check(mod(amount,100)=0));
+
+insert into emp4 values(&eid,&amount);
+
+create table emp3(eid number(2),pwd varchar2(20) check(length(pwd)>=8));
+
+insert into emp3 values(&eid,'&amount');
+
+create table dept55(dno number(2) primary key,dname varchar2(10),loc varchar2(10));
+
+create table emp65(empno number(4) primary key,ename varchar2(10) not null,
+sal number(7) check(sal>=3000),dno number(2) references dept55(dno));
+
+insert into dept55 values(&dno,'&dname','&loc');
+
+insert into emp65 values(&empno,'&ename',&sal,&dno);
+
+
+
+create table manager(mgrno number(2),mgrname varchar2(10), start_date date,end_date date,check(start_date>end_date));
+
+insert into manager values(&mgrno,'&mgrname','&start_date','&end_date');
+
+create table student(sid number(2) primary key,sname varchar2(10));
+
+create table course(cid number(2) primary key,cname varchar2(10));
+
+create table registrations(sid number(2) references student(sid),cid number(2) references course(cid),
+dor date,fee number(5),primary key(sid,cid));
+
+insert into student values(&sid,'&sname');
+
+insert into course values(&cid,'&cname');
+
+insert into registrations values(&sid,&cid,'&dor',&fee);
+
+create table certificats(certno number(10),doi date,sid number(2),cid number(2), 
+foreign key(sid,cid) references registrations(sid,cid));
+
+insert into certificats values(&certno,'&doi',&sid,&cid);
+
+create table emp12(eid number(2),sal number(10));
+
+insert into emp12 values(&eid,&sal);
+
+create table emp55(eid number(2)primary key,ename varchar2(10),dno number(2));
+
+create table dept1(dno number(2),dname varchar2(10));
+
+select constraint_name,constraint_type,search_condition from user_constraints where table_name='emp65';
+
+create table dept77(dno number(2) primary key,dname varchar2(10));
+
+insert into dept77 values(10,'HR');
+
+create table emp76(eno number(2) primary key,dno number(2) references dept77(dno) on delete cascade);
+
+
+create table dept78(dno number(2) primary key,dname varchar2(10));
+
+insert into dept78 values(10,'HR');
+
+create table emp78(eno number(2) primary key,dno number(2) references dept77(dno) on delete cascade);
+insert into emp78 values(1,10);
+create table emp88(eno number(2) primary key,ename varchar2(10),dno number(2));
+
+insert into emp88 values(1,'hari',10);
+insert into emp88 values(2,'sasi',20);
+insert into emp88 values(3,'giri',30);
+
+
+create table dept88(eno number(2) references emp88(eno) on delete set null,dno number(2));
+
+create table dept_eui(dno number(2) primary key,dname varchar2(2),loc varchar2(10));
+
+insert into dept_eui values(10,'ac','hyd');
+insert into dept_eui values(11,'ad','chi');
+insert into dept_eui values(12,'fi','bang');
+insert into dept_eui values(14,'gg',);
+
+create table emp_eui(eno number(2) primary key,ename varchar2(10),sal number(10),dno number(2) references dept_eui(dno));
+
+insert into emp_eui values(1,'hari',66777,10);
+insert into emp_eui values(2,'rama',87654,11);
+insert into emp_eui values(3,'sita',89764,12);
+insert into emp_eui values(4,'lakshmana',66777,13);error
+insert into emp_eui values(5,'kranthi',97363,10);
+insert into emp_eui values(6,'kalyani',42425,11);
+insert into emp_eui values(7,'chandu',87543,'');
+
+select eno,ename,sal,dname,loc from emp_eui,dept_eui where emp_eui.dno=dept_eui.dno(+);
+select e.*,p.* from emp_eui e,dept_eui p where e.dno=p.dno(+);
+
+select eno,ename,sal,dname,loc from emp_eui,dept_eui where emp_eui.dno=dept_eui.dno(+) union
+select eno,ename,sal,dname,loc from emp_eui,dept_eui where emp_eui.dno(+)=dept_eui.dno;
+
+create table emp_neui(empno number(2) primary key,ename varchar2(10),sal number(10));
+
+insert into emp_neui(&empno,'&ename',&sal);
+
+create table salgrade1(grade number(2),losal number(10),hisal number(10));
+
+insert into salgrade1 values(&grade,&losal,&hisal);
+
+select e.ename,e.sal,s.grade from emp_neui e,salgrade1 s where e.sal between s.losal and s.hisal;
+
+select e.ename,d.dname,s.grade from emp_neui e join dept_eui d
+on e.dno=d.dno join salgrade1 s
+on e.sal between s.losal and s.hisal;
+
+selfJoin:
+---------
+
+create table emp_selfj(empno number(2),ename varchar2(10),mgr varchar2(10));
+
+insert into emp_selfj values(&empno,'&ename',&mgr);
+select x.ename,y.ename as manager from emp_selfj x,emp_selfj y where x.mgr=y.empno;
+
+select x.ename,y.ename as manager from emp_selfj x,emp_selfj y where x.mgr=y.empno and x.ename='d';
+
+create table x(no number(2),name varchar2(10),sal number(10));
+
+insert into x values(&no,'&name',&sal);
+
+select s.name,s.sal from x s,x p where s.sal=p.sal;
+
+select s.name,s.sal from x s,x p where s.sal=p.sal and s.no <> p.no;
+
+create table team(id number(2),country varchar2(10));
+
+insert into team values(&id,'&country');
+
+select a.country||' -vs- '||b.country from team a,team b where a.id<b.id;
+
+cross join:
+select e.ename,d.dname from emp e,dept d;
+select e.ename,d.dname from emp e,dept d where e.deptno=d.deptno;
+
+select e.ename,d.dname from emp e cross join dept d;
+
+SET OPERATORS:
+-----------------
+select job from emp where deptno=20
+union
+select job from emp where deptno=30;
+
+insert into emp values(7944,'ward','manager',7369,'',56423,null,10);
+
+select ename from emp
+union
+select dname from dept;
+
+create table dept12(dno number(2) primary key,dname varchar2(10),loc varchar2(10));
+
+create table emp_ind(eno number(2),ename varchar2(10),dno number(2) references dept12(dno));
+
+create table emp_us(eno number(2),ename varchar2(10),dno number(2) references dept12(dno));
+
+insert into dept12 values(10,'acct','ny');
+insert into dept12 values(20,'fin','nh');
+insert into dept12 values(30,'admin','oh');
+
+
+insert into emp_ind values(1,'ramu',10);
+insert into emp_ind values(2,'sita',20);
+insert into emp_ind values(3,'Laksh',30);
+insert into emp_ind values(4,'hanuma',10);
+insert into emp_ind values(5,'ravana',30);
+insert into emp_ind values(6,'bharath',20);
+
+insert into emp_us values(11,'smith',20);
+insert into emp_us values(22,'john',30);
+insert into emp_us values(33,'krish',10);
+insert into emp_us values(44,'chris',20);
+insert into emp_us values(55,'janu',10);
+insert into emp_us values(66,'misra',30);
+
+select *from emp_ind
+union
+select *from emp_us;
+
+select e.*,d.* from emp_us e,dept12 d where e.dno=d.dno
+union
+select e.*,d.* from emp_ind e,dept12 d where e.dno=d.dno;
+
+select job from emp where deptno=20
+union all
+select job from emp where deptno=30;
+
+select job from emp where deptno=20
+minus
+select job from emp where deptno=30;
+
+select job from emp where deptno=20
+intersect
+select job from emp where deptno=30;
+
+
+select deptno,sum(sal) from empgrp group by deptno order by 1 asc;
+
+select job,count(*) from emp group by job; 
+
+select to_char(hiredate,'yyyy') as year,count(*) from emp group by to_char(hiredate,'yyyy') order by 1 asc;
+select deptno,sum(sal) from emp where deptno in(10,20) group by deptno;
+
+select deptno,sum(sal) from emp where deptno in(10,20) group by deptno having sum(sal)>10000;
+
+select deptno,job,sum(sal) from emp group by deptno,job;
+
+select deptno,job,sum(sal) from emp group by rollup(deptno,job) order by 1 asc;
+
+select deptno,job,sum(sal) from emp group by cube(deptno,job) order by 1 asc;
+
+select deptno,sum(sal) from emp group by deptno;
+
+select d.dname,sum(e.sal) as totalsal from emp e,dept d where e.deptno=d.deptno group by d.dname;
+
+select JOB,
+case job
+when 'CLERK' then 'worker'
+when 'MANAGER' then 'boss'
+when 'SALESMAN' then 'bigboss'
+else 'EMEPLOYEE'
+end as job from emp;
+
+select ename,sal,
+case
+when sal>3000 then 'hisal'
+when sal<3000 then 'lowsal'
+else 'avgsal'
+end as salrange from emp;
+
+select ename,sal,deptno
+case
+when deptno=10 then sal+10
+when deptno=20 then sal+20
+else 'sal'
+end as sal from emp; (error)
+
+select *from emp where sal>(select sal from emp where ename='BLAKE');
+select *from emp where hiredate<(select hiredate from emp where ename='KING');
+SELECT ENAME FROM EMP WHERE SAL=(SELECT MAX(SAL) FROM EMP);
+
+UPDATE EMP SET SAL=(SELECT MAX(SAL) FROM EMP WHERE DEPTNO=30) WHERE EMPNO=7499;
+
+

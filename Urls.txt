@@ -1,0 +1,8 @@
+Access Information Server web applications using the following URLs:
+IBM InfoSphere Information Server Web Console: http://v9440446603:9080/ibm/iis/console
+IBM InfoSphere Information Server InfoCenter: http://v9440446603:9080/infocenter/index.jsp
+IBM InfoSphere Metadata Asset Manager:  http://v9440446603:9080/ibm/imam/console  
+IBM InfoSphere Business Glossary: http://v9440446603:9080/bg
+IBM InfoSphere Metadata Workbench: http://v9440446603:9080/workbench
+IBM InfoSphere Data Quality Console: http://v9440446603:9080/ibm/iis/dqc/login.jsp
+
